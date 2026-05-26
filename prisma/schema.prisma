@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  accounts      Account[]
+  sessions      Session[]
+  subjects      Subject[]
+  tasks         StudyTask[]
+  goals         Goal[]
+  studySessions StudySession[]
+  materials     StudyMaterial[]
+  notifications Notification[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Subject {
+  id          String          @id @default(cuid())
+  userId      String
+  name        String
+  color       String          @default("#18b86f")
+  professor   String?
+  room        String?
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks       StudyTask[]
+  goals       Goal[]
+  sessions    StudySession[]
+  materials   StudyMaterial[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model StudyTask {
+  id          String     @id @default(cuid())
+  userId      String
+  subjectId   String?
+  title       String
+  description String?
+  status      TaskStatus @default(TODO)
+  priority    Priority   @default(MEDIUM)
+  dueDate     DateTime?
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject     Subject?   @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Goal {
+  id          String    @id @default(cuid())
+  userId      String
+  subjectId   String?
+  title       String
+  targetValue Int
+  currentValue Int      @default(0)
+  unit        String
+  dueDate     DateTime?
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject     Subject?  @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model StudySession {
+  id          String   @id @default(cuid())
+  userId      String
+  subjectId   String?
+  title       String
+  minutes     Int
+  studiedAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject     Subject? @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+}
+
+model StudyMaterial {
+  id          String   @id @default(cuid())
+  userId      String
+  subjectId   String?
+  title       String
+  fileUrl     String
+  fileType    String
+  sizeInBytes Int?
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject     Subject? @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  body      String?
+  readAt    DateTime?
+  scheduledFor DateTime?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
