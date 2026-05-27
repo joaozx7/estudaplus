@@ -29,9 +29,12 @@ export function ThemeToggle() {
       onClick={toggleTheme}
       aria-label="Alternar tema"
       title="Alternar tema"
-      className="grid h-10 w-10 place-items-center rounded-lg border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+      className="sidebar-item group relative flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-all hover:bg-slate-100 hover:text-slate-700 dark:text-slate-500 dark:hover:bg-slate-800 dark:hover:text-slate-300"
     >
-      {dark ? <Sun size={18} /> : <Moon size={18} />}
+      {dark ? <Sun size={20} /> : <Moon size={20} />}
+      <span className="sidebar-tooltip absolute left-full ml-3 whitespace-nowrap rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white shadow-lg dark:bg-slate-700">
+        {dark ? "Modo claro" : "Modo escuro"}
+      </span>
     </button>
   );
 }
