@@ -11,6 +11,8 @@ import {
   TrendingUp,
   UserPlus,
 } from "lucide-react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
 const ThemeToggle = dynamic(
@@ -52,14 +54,51 @@ const FEATURES = [
 ];
 
 export default function LoginPage() {
+  const router = useRouter();
   const [tab, setTab] = useState<Tab>("entrar");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [days, setDays] = useState(BASE_DAYS);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
+    try {
+      if (tab === "criar") {
+        const response = await fetch("/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password }),
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error ?? "Não foi possível criar sua conta.");
+        }
+      }
+
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        throw new Error("Email ou senha incorretos.");
+      }
+
+      router.push("/");
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Algo deu errado.");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   // animação infinita das barras
@@ -129,7 +168,7 @@ export default function LoginPage() {
               <button
                 key={t}
                 type="button"
-                onClick={() => setTab(t)}
+                onClick={() => { setTab(t); setError(""); }}
                 className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
                   tab === t
                     ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-50 shadow-sm border border-slate-200 dark:border-slate-600"
@@ -186,10 +225,11 @@ export default function LoginPage() {
 
               <input
                 type="password"
-                placeholder={tab === "entrar" ? "Sua senha" : "Crie uma senha"}
+                placeholder={tab === "entrar" ? "Sua senha" : "Crie uma senha (mín. 8 caracteres)"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                minLength={8}
                 className="w-full h-11 pl-10 pr-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm text-slate-900 dark:text-slate-50 placeholder-slate-400 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/10 transition"
               />
             </div>
@@ -207,11 +247,20 @@ export default function LoginPage() {
 
             {tab === "criar" && <div className="mb-5" />}
 
+            {error && (
+              <p className="mb-3 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700 dark:border-rose-900 dark:bg-rose-950/40 dark:text-rose-200">
+                {error}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="w-full h-11 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold flex items-center justify-center gap-2 transition mb-4"
+              disabled={isLoading}
+              className="w-full h-11 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold flex items-center justify-center gap-2 transition mb-4 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {tab === "entrar" ? (
+              {isLoading ? (
+                "Aguarde..."
+              ) : tab === "entrar" ? (
                 <>
                   <LogIn size={16} />
                   Acessar minha conta
