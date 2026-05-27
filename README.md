@@ -27,6 +27,7 @@ Esta base ja inclui:
 - Rotas iniciais de API para saude, tarefas, autenticacao e cadastro
 - CRUD inicial de materias em `/api/subjects`
 - CRUD inicial de tarefas em `/api/tasks`
+- CRUD inicial de metas em `/api/goals`
 
 ## Como rodar localmente
 
@@ -82,3 +83,7 @@ O app abre em `http://localhost:3000`.
 - `POST /api/subjects`: cria materia do usuario autenticado.
 - `PATCH /api/subjects/:id`: atualiza materia do usuario autenticado.
 - `DELETE /api/subjects/:id`: remove materia do usuario autenticado.
+- `GET /api/goals`: lista metas do usuario autenticado.
+- `POST /api/goals`: cria meta do usuario autenticado.
+- `PATCH /api/goals/:id`: atualiza meta do usuario autenticado.
+- `DELETE /api/goals/:id`: remove meta do usuario autenticado.
