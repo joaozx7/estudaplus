@@ -13,21 +13,19 @@
 body {
   min-height: 100vh;
   background: #f8fafc;
-  color: #171717;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
 }
 
 .dark body {
-  background: #111827;
-  color: #f8fafc;
+  background: #0b1120;
+  color: #f1f5f9;
 }
 
 * {
   box-sizing: border-box;
 }
 
-button,
-input,
-select,
-textarea {
+button, input, select, textarea {
   font: inherit;
 }

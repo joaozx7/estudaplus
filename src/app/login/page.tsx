@@ -35,7 +35,7 @@ const BASE_DAYS = [
 const FEATURES = [
   {
     icon: ListChecks,
-    color: "bg-brand-900/30 text-brand-300",
+    color: "bg-blue-900/30 text-blue-300",
     title: "Tarefas e prazos organizados",
     desc: "Crie tarefas por matéria, defina prioridade e acompanhe o que falta fazer.",
   },
@@ -101,7 +101,6 @@ export default function LoginPage() {
     }
   }
 
-  // animação infinita das barras
   useEffect(() => {
     const interval = setInterval(() => {
       setDays((prev) =>
@@ -131,7 +130,7 @@ export default function LoginPage() {
           {/* Logo */}
           <div className="flex items-center justify-between mb-10">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-brand-500 grid place-items-center">
+              <div className="w-10 h-10 rounded-xl bg-brand-600 grid place-items-center">
                 <GraduationCap size={20} className="text-white" />
               </div>
 
@@ -189,7 +188,6 @@ export default function LoginPage() {
                   size={15}
                   className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
                 />
-
                 <input
                   type="text"
                   placeholder="Seu nome"
@@ -206,7 +204,6 @@ export default function LoginPage() {
                 size={15}
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
               />
-
               <input
                 type="email"
                 placeholder="voce@email.com"
@@ -222,7 +219,6 @@ export default function LoginPage() {
                 size={15}
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
               />
-
               <input
                 type="password"
                 placeholder={tab === "entrar" ? "Sua senha" : "Crie uma senha (mín. 8 caracteres)"}
@@ -256,7 +252,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full h-11 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold flex items-center justify-center gap-2 transition mb-4 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full h-11 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold flex items-center justify-center gap-2 transition mb-4 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 "Aguarde..."
@@ -280,7 +276,7 @@ export default function LoginPage() {
 
           {/* Heading */}
           <div>
-            <p className="text-xs font-semibold tracking-widest uppercase text-teal-400 mb-2">
+            <p className="text-xs font-semibold tracking-widest uppercase text-blue-400 mb-2">
               Por que usar o Estuda+
             </p>
 
@@ -295,48 +291,34 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* DASHBOARD */}
-          <div className="bg-white/[0.03] border border-white/[0.07] rounded-2xl p-6 backdrop-blur-sm">
+          {/* Gráfico */}
+          <div className="bg-white/[0.03] border border-white/[0.07] rounded-2xl p-6">
 
             <div className="flex items-center justify-between mb-5">
               <span className="text-xs text-slate-500 font-medium">
                 Atividade semanal
               </span>
-
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
             </div>
 
-            {/* gráfico */}
             <div className="flex items-end gap-3 h-40">
-
               {days.map((d) => (
                 <div
                   key={d.day}
                   className="flex-1 flex flex-col items-center justify-end gap-3 h-full"
                 >
-
-                  {/* barra */}
                   <div className="w-full h-full flex items-end justify-center">
-
                     <div
-                      className="
-                        w-[45%]
-                        rounded-t-2xl
-                        transition-all
-                        duration-1000
-                        ease-in-out
-                        shadow-[0_0_20px_rgba(45,212,191,0.25)]
-                      "
+                      className="w-[45%] rounded-t-2xl transition-all duration-1000 ease-in-out"
                       style={{
                         height: `${d.h * 18}%`,
                         minHeight: "20px",
                         background: d.current
-                          ? "linear-gradient(to top, #14b8a6, #5eead4)"
-                          : "linear-gradient(to top, rgba(20,184,166,0.35), rgba(94,234,212,0.18))",
+                          ? "linear-gradient(to top, #2563eb, #60a5fa)"
+                          : "linear-gradient(to top, rgba(37,99,235,0.35), rgba(96,165,250,0.18))",
                       }}
                     />
                   </div>
-
                   <span className="text-[11px] text-slate-500">
                     {d.day}
                   </span>
@@ -349,18 +331,15 @@ export default function LoginPage() {
           <div className="flex flex-col gap-5">
             {FEATURES.map(({ icon: Icon, color, title, desc }) => (
               <div key={title} className="flex items-start gap-3">
-
                 <div
                   className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${color}`}
                 >
                   <Icon size={16} />
                 </div>
-
                 <div>
                   <p className="text-sm font-medium text-slate-200 mb-0.5">
                     {title}
                   </p>
-
                   <p className="text-xs text-slate-500 leading-relaxed">
                     {desc}
                   </p>
