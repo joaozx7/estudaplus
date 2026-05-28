@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import {
   GraduationCap,
   ListChecks,
@@ -14,11 +13,6 @@ import {
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-
-const ThemeToggle = dynamic(
-  () => import("@/components/theme-toggle").then((mod) => mod.ThemeToggle),
-  { ssr: false }
-);
 
 type Tab = "entrar" | "criar";
 
@@ -144,8 +138,6 @@ export default function LoginPage() {
                 </p>
               </div>
             </div>
-
-            <ThemeToggle />
           </div>
 
           {/* Heading */}

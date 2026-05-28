@@ -61,8 +61,10 @@ export default function TarefasPage() {
         fetch("/api/tasks").then((r) => r.json()),
         fetch("/api/subjects").then((r) => r.json()),
       ]);
-      setTasks(t.tasks ?? t ?? []);
-      setSubjects(s.subjects ?? s ?? []);
+      const taskList = Array.isArray(t) ? t : (t.tasks ?? t.data ?? []);
+      setTasks(taskList);
+      const subjectList = Array.isArray(s) ? s : (s.subjects ?? s.data ?? []);
+      setSubjects(subjectList);
     } catch {
       setError("Não foi possível carregar as tarefas.");
     } finally {

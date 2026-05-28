@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/navbar";
-import { getCurrentUser } from "@/lib/current-user";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -15,18 +13,13 @@ export const metadata: Metadata = {
   description: "Organização e produtividade para estudantes.",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const user = await getCurrentUser();
-
   return (
     <html lang="pt-BR" suppressHydrationWarning className={outfit.variable}>
       <body style={{ fontFamily: "var(--font-outfit), system-ui, sans-serif" }}>
-        <Navbar userName={user?.name} />
-        <main className="mx-auto max-w-6xl px-4 py-8">
-          {children}
-        </main>
+        {children}
       </body>
     </html>
   );

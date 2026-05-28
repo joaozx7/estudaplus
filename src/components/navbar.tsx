@@ -23,10 +23,10 @@ export function Navbar({ userName }: { userName?: string | null }) {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md dark:border-slate-800 dark:bg-slate-950/80">
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4">
+      <div className="mx-auto flex h-14 max-w-6xl items-center px-4">
 
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+        {/* Logo — esquerda */}
+        <Link href="/" className="flex items-center gap-2.5 shrink-0 mr-8">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600">
             <GraduationCap size={16} className="text-white" />
           </div>
@@ -35,8 +35,8 @@ export function Navbar({ userName }: { userName?: string | null }) {
           </span>
         </Link>
 
-        {/* Nav links */}
-        <nav className="flex items-center gap-1">
+        {/* Nav links — centro */}
+        <nav className="flex flex-1 items-center justify-center gap-1">
           {NAV.map(({ href, label, icon: Icon }) => {
             const active = path === href;
             return (
@@ -56,10 +56,10 @@ export function Navbar({ userName }: { userName?: string | null }) {
           })}
         </nav>
 
-        {/* Right side */}
-        <div className="ml-auto flex items-center gap-3">
+        {/* Direita — dark mode + sair */}
+        <div className="flex items-center gap-2 shrink-0 ml-8">
           {userName && (
-            <span className="hidden text-xs text-slate-400 sm:block">
+            <span className="hidden text-xs text-slate-400 sm:block mr-1">
               Olá, <span className="font-medium text-slate-600 dark:text-slate-300">{userName.split(" ")[0]}</span>
             </span>
           )}
@@ -72,6 +72,7 @@ export function Navbar({ userName }: { userName?: string | null }) {
             <LogOut size={14} />
           </button>
         </div>
+
       </div>
     </header>
   );

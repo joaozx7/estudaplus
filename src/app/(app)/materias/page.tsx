@@ -32,7 +32,8 @@ export default function MateriasPage() {
     setLoading(true);
     try {
       const data = await fetch("/api/subjects").then((r) => r.json());
-      setSubjects(data.subjects ?? data ?? []);
+      const list = Array.isArray(data) ? data : (data.subjects ?? data.data ?? []);
+      setSubjects(list);
     } catch {
       setError("Não foi possível carregar as matérias.");
     } finally {

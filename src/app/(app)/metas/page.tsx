@@ -46,8 +46,10 @@ export default function MetasPage() {
         fetch("/api/goals").then((r) => r.json()),
         fetch("/api/subjects").then((r) => r.json()),
       ]);
-      setGoals(g.goals ?? g ?? []);
-      setSubjects(s.subjects ?? s ?? []);
+      const goalList = Array.isArray(g) ? g : (g.goals ?? g.data ?? []);
+      setGoals(goalList);
+      const subjectList = Array.isArray(s) ? s : (s.subjects ?? s.data ?? []);
+      setSubjects(subjectList);
     } catch {
       setError("Não foi possível carregar as metas.");
     } finally {
